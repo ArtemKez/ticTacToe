@@ -5,130 +5,88 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 function Square(props) {
-  return ( < button className = "square"
-    onClick = {
-      props.onClick
-    } > {
-      props.value
-    } < /button>
-  );
+    return (
+        <button className="square"
+                onClick={props.onClick}> {props.value} </button>
+    );
 }
 
 class Board extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        squares: Array(9).fill(null),
-        xIsNext: true,
-      };
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null),
+            xIsNext: true,
+        };
     }
 
     handleClick(i) {
-      const squares = this.state.squares.slice();
-      if (calculateWinner(squares) || squares[i]) {
-        return;
-      }
-      squares[i] = this.state.xIsNext ? 'X' : 'O';
-      this.setState({
-        squares: squares,
-        xIsNext: !this.state.xIsNext,
-      });
+        const squares = this.state.squares.slice();
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+            squares: squares,
+            xIsNext: !this.state.xIsNext,
+        });
     }
 
     renderSquare(i) {
-      return ( < Square value = {
-          this.state.squares[i]
-        }
-        onClick = {
-          () => this.handleClick(i)
-        }
-        />);
-      }
+        return (< Square value={this.state.squares[i]} onClick={() => this.handleClick(i)}/>);
+    }
 
-      render() {
+    render() {
         const winner = calculateWinner(this.state.squares);
         let status;
         if (winner) {
-          status = 'Выиграл ' + winner;
+            status = 'Выиграл ' + winner;
         } else {
-          status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
+            status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
         }
 
-        return ( < div >
-          <
-          div className = "status" > {
-            status
-          } <
-          /div> <
-          div className = "board-row" > {
-            this.renderSquare(0)
-          } {
-            this.renderSquare(1)
-          } {
-            this.renderSquare(2)
-          } <
-          /div> <
-          div className = "board-row" > {
-            this.renderSquare(3)
-          } {
-            this.renderSquare(4)
-          } {
-            this.renderSquare(5)
-          } <
-          /div> <
-          div className = "board-row" > {
-            this.renderSquare(6)
-          } {
-            this.renderSquare(7)
-          } {
-            this.renderSquare(8)
-          } <
-          /div> < /
-          div >
+        return (
+            <div>
+                <div className="status"> {status} </div>
+                <div className="board-row"> {this.renderSquare(0)} {this.renderSquare(1)} {this.renderSquare(2)} </div>
+                <div className="board-row"> {this.renderSquare(3)} {this.renderSquare(4)} {this.renderSquare(5)} </div>
+                <div className="board-row"> {this.renderSquare(6)} {this.renderSquare(7)} {this.renderSquare(8)} </div>
+            </div>
         );
-      }
     }
+}
 
-    class Game extends React.Component {
-      render() {
-        return ( <
-          div className = "game" >
-          <
-          div className = "game-board" >
-          <
-          Board / >
-          <
-          /div> <
-          div className = "game-info" >
-          <
-          div > {
-            /* status */
-          } < /div> <
-          ol > {
-            /* TODO */
-          } < /ol> < /
-          div > <
-          /div>
+class Game extends React.Component {
+    render() {
+        return (
+            <div className="game">
+                <div className="game-board">
+                    <Board/>
+                </div>
+                <div className="game-info">
+                    <div> {
+                        /* status */
+                    } </div>
+                    <ol> {
+                        /* TODO */
+                    } </ol>
+                </div>
+            </div>
         );
-      }
     }
+}
 
-    ReactDOM.render( <
-      React.StrictMode >
-      <
-      Game / >
-      <
-      /React.StrictMode>,
-      document.getElementById('root')
-    );
+ReactDOM.render(<
+        React.StrictMode>
+        <Game/>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
 
-    // If you want to start measuring performance in your app, pass a function
-    // to log results (for example: reportWebVitals(console.log))
-    // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-    reportWebVitals();
+reportWebVitals();
 
-    function calculateWinner(squares) {
-      const lines = [
+function calculateWinner(squares) {
+    const lines = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -137,12 +95,12 @@ class Board extends React.Component {
         [2, 5, 8],
         [0, 4, 8],
         [2, 4, 6],
-      ];
-      for (let i = 0; i < lines.length; i++) {
+    ];
+    for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-          return squares[a];
+            return squares[a];
         }
-      }
-      return null;
     }
+    return null;
+}
